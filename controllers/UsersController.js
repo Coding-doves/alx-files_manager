@@ -1,3 +1,7 @@
-const sha1 = require('sha1');
-const User = require('../m')
-class
+#!/usr/bin/node
+
+const dbClient = require('../utils/db')
+
+class UsersController {
+
+}

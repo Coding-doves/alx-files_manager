@@ -2,17 +2,20 @@ const redisClient = require('../utils/redis');
 const dbClient = require('../utils/db');
 
 class AppController {
-  getStatus(req, res) {
-    if (redisClient.isAlive() && dbClient.isAlive()) {
-      res.status(200).send('{ "redis": true, "db": true }');
-    }
+  async getStatus(req, res) {
+    const redisAlive = redisClient.isAlive();
+    const dbAlive = dbClient.isAlive();
+    const status = { redis: redisAlive, db: dbAlive };
+
+    res.status(200).json(status);
   }
 
-  async getStat(req, res) {
+  async getStats(req, res) {
     const userCount = await dbClient.nbUsers();
     const filesCount = await dbClient.nbFiles();
+    const stats = { users: userCount, files: filesCount };
 
-    res.status(200).json({ users: userCount, files: filesCount });
+    res.status(200).json(stats);
   }
 }
 

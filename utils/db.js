@@ -19,18 +19,24 @@ class DBClient {
     }
   }
   
-  isAlive() {
-    return this.isConnected();
+  isConnected() {
+    return !!this.client && this.client.isConnected();
   }
 
   async nbUsers() {
+    if (!this.isConnected()) {
+      return 0;
+    }
     return this.client.db().collection('users').countDocuments();
   }
 
   async nbFiles() {
+    if (!this.isConnected()) {
+      return 0;
+    }
     return this.client.db().collection('files').countDocuments();
   }
 }
 
 const dbClient = new DBClient();
-module.exports = dbClient;
+export default dbClient;

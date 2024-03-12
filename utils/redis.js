@@ -44,9 +44,18 @@ class RedisClient {
   }
 
   async del(key) {
-    await this.client.del(key);
+    // await this.client.del(key);
+    return new Promise((resolve, reject) => {
+      this.client.del(key, (err, reply) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(reply);
+        }
+      });
+    });
   }
 }
 
-export const redisClient = new RedisClient();
+const redisClient = new RedisClient();
 export default redisClient;
